@@ -8,3 +8,8 @@
 ## Steps to run Flask-Service
 1) `$ export FLASK_APP=hello.py`
 2) `$ flask run`
+
+
+## Steps to run the django rest
+1) Go to /server folder and run `pip install -r common.py` to install the server requirements
+2) `python3 manage.py runserver` to start the server and go to 'http://localhost:8000'
