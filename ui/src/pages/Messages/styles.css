@@ -1,0 +1,4 @@
+.msg { border-bottom: 2px solid #eeeeee; margin: 15px 0; padding-bottom: 40px; }
+.msg .msg-date { font-size: 14px; }
+.msg .msg-title { font-size: 16px; font-weight: 600; }
+.msg .msg-content { font-size: 14px; margin: 10px 0; display: block; }
