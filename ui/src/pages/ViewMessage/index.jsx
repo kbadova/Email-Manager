@@ -9,45 +9,49 @@ import './styles.css';
 
 class ViewMessage extends React.Component {
 
-	render() {
-		const message = {
-			id: 0,
-			from: '',
-			to: [
-				{ id: 1, email: 'slaviana@gmail.com' },
-				{ id: 2, email: 'krasi@gmail.com' },
-				{ id: 3, email: 'ruzha@gmail.com' }
-			],
-			subject: 'Устен изпит',
-			sent_at: '07.01.2018 15:30',
-			content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum?',
-		};
+  render() {
+    const message = {
+      id: 1,
+      from: '',
+      to: [
+        { id: 1, email: 'slaviana@gmail.com' },
+        { id: 2, email: 'krasi@gmail.com' },
+        { id: 3, email: 'ruzha@gmail.com' }
+      ],
+      subject: 'Устен изпит',
+      sent_at: '07.01.2018 15:30',
+      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum?',
+    };
 
-		console.log(message);
+    console.log(message);
 
-		return (
-			<div>
-				<div className="mb-20">
-					<h1>Преглед на ново съобщение</h1>
-					<div>
-						<span className="recipients">Получатели:</span>
-						{message.to &&
-							message.to.map(rec => {
-								return <span className="recipient" key="{rec.id}">{rec.email}</span>
-							})}
-					</div>
-					<div className="view-msg">
-						<h4>{message.subject}</h4>
-						<div>{message.content}</div>
-					</div>
-					<div>
-						<a className="pull-right btn btn-blue">Изпрати</a>
-						<a className="pull-right btn btn-default mr-10">Редактирай</a>
-					</div>
-				</div>
-			</div>
-		);
-	}
+    return (
+      <div>
+        <div className="mb-20 mt-10">
+          <div className="breadcrumb">
+            <a href="/messages">Начало /</a>
+            <a className="active"> Преглед на съобщение</a>
+          </div>
+          <h1>Преглед на съобщение</h1>
+          <div>
+            <span className="recipients">Получатели:</span>
+            {message.to &&
+              message.to.map(rec => {
+                return <span className="recipient" key="{rec.id}">{rec.email}</span>
+              })}
+          </div>
+          <div className="view-msg">
+            <h4>{message.subject}</h4>
+            <div>{message.content}</div>
+          </div>
+          <div>
+            <a className="pull-right btn btn-blue">Изпрати</a>
+            <a className="pull-right btn btn-default mr-10">Редактирай</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 

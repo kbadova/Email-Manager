@@ -11,19 +11,19 @@ class Messages extends React.Component {
 
   render() {
     const messages = [{
-      id: 0,
+      id: 1,
       subject: 'Устен изпит',
       sent_at: '07.01.2018 15:30',
       content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum?',
     },
     {
-      id: 1,
+      id: 2,
       subject: 'Пректи - защити',
       sent_at: '03.01.2018 15:30',
       content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum?',
     },
     {
-      id: 2,
+      id: 3,
       subject: 'Нанасяне на оценки',
       sent_at: '07.01.2018 15:30',
       content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aperiam laudantium aliquam reiciendis pariatur minus natus repellendus, corrupti totam ad, perspiciatis modi beatae numquam laboriosam harum, ullam nisi sapiente voluptatum?',
@@ -33,8 +33,9 @@ class Messages extends React.Component {
 
     return (
       <div>
-        <div className="mb-20">
-          <a className="pull-right btn btn-green">Създай</a>
+        <div className="mb-20 mt-20">
+          <div className="breadcrumb"><a className="active">Начало /</a></div>
+          <a className="pull-right btn btn-green" href="/new-message">Създай</a>
           <h1>Изпратени съобщения</h1>
         </div>
 
@@ -46,7 +47,7 @@ class Messages extends React.Component {
                 <span className="msg-title">{message.subject}</span>
                 <span className="msg-content">
                   {message.content}
-                  <a className="pull-right btn btn-blue mt-10 mb-10">Виж</a>
+                  <a className="pull-right btn btn-blue mt-10 mb-10" href={"/view-message/" + message.id}>Виж</a>
                 </span>
               </div>;
             })}
