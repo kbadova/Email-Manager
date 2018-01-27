@@ -24,17 +24,18 @@ class MessageSerializer(serializers.ModelSerializer):
 
         return StudentSerializer(students, many=True).data
 
+
 def call_python_service(new_message):
     serializer = MessageSerializer(new_message)
     headers = {'content-type': 'application/json'}
     requests.post('http://localhost:5000/send-message/', data=serializer.data, headers=headers)
 
 
-def create_message_service(subject, content, send_from, receivers):
+def create_message_service(subject, content, send_from, students):
     new_message = Message.objects.create(subject=subject,
                                          content=content,
                                          send_from=send_from)
-    for student in receivers:
+    for student in students:
         StudentInMessage.objects.create(student=student, message=new_message)
 
     # call_python_service(new_message)

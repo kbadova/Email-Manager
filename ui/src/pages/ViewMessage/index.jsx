@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
+import {Link} from 'react-router-dom';
+import paths from '../../paths';
 import {fetchMessage} from './actions';
 
 import '../../base-styles.css';
@@ -17,10 +18,10 @@ class ViewMessage extends React.Component {
 		return (
 			<div>
 				<div className="mb-20 mt-10">
-                   <div className="breadcrumb">
-            <a href="/messages">Начало /</a>
-            <a className="active"> Преглед на съобщение</a>
-          </div>
+					<div className="breadcrumb">
+						<Link to={paths.messages}>Начало /</Link>
+						<a className="active"> Преглед на съобщение</a>
+					</div>
 					<h1>Преглед на ново съобщение</h1>
 					<div>
 						<span className="recipients">Получатели:</span>

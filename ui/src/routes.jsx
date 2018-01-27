@@ -1,5 +1,8 @@
 import React from 'react';
-import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
+import history from './history';
+
+import {Router} from 'react-router';
+import {Switch, Route} from 'react-router-dom';
 
 import paths from 'paths';
 
@@ -10,7 +13,7 @@ import Login from 'pages/Login';
 
 function routes() {
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route path={paths.messages} component={Messages} />
         <Route path={paths.newMessage} component={NewMessage} />

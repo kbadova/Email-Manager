@@ -15,11 +15,17 @@ function* fetchCoursesWorker(action) {
 
 function* sendMessageWorker(action) {
   try {
+    const data = Object.assign({}, action.data, {
+      send_from: localStorage.getItem('email')
+    });
     const response = yield call(
       axios.post,
-      'http://localhost:8000/send-message',
-      action.data
+      'http://localhost:8000/create-message/',
+      data
     );
+    if (response.data.completed) {
+      alert('Your message was sent successfully');
+    }
 
     yield put(successSendMessage(response.data));
   } catch (error) {

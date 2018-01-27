@@ -8,9 +8,8 @@ import createSagaMiddleware from 'redux-saga';
 
 import routes from 'routes';
 import reducers from 'modules';
+import history from './history';
 
-import createHistory from 'history/createBrowserHistory';
-const history = createHistory();
 const routerMid = routerMiddleware(history);
 
 const sagaMiddleware = createSagaMiddleware();

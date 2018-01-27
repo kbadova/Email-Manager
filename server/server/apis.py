@@ -45,8 +45,8 @@ class CreateMessageAPI(APIView):
     class CreateMessageSerializer(serializers.Serializer):
         subject = serializers.CharField()
         content = serializers.CharField()
-        send_from = serializers.PrimaryKeyRelatedField(queryset=Teacher.objects.all())
-        receivers = serializers.ListField(child=serializers.PrimaryKeyRelatedField(queryset=Student.objects.all()))
+        send_from = serializers.SlugRelatedField(queryset=Teacher.objects.all(), slug_field='email')
+        students = serializers.ListField(child=serializers.PrimaryKeyRelatedField(queryset=Student.objects.all()))
 
     def post(self, request, *args, **kwargs):
         serializer = self.CreateMessageSerializer(data=request.data)
@@ -54,6 +54,7 @@ class CreateMessageAPI(APIView):
         validated_data = serializer.validated_data
 
         new_message = create_message_service(**validated_data)
+
         response_serializer = MessageSerializer(new_message)
 
         return Response(data=response_serializer.data, status=status.HTTP_201_CREATED)

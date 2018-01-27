@@ -1,9 +1,13 @@
 import React from 'react';
 import _ from 'lodash';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
+import paths from '../../paths';
+
+import {Link} from 'react-router-dom';
+
 import VirtualizedSelect from 'react-virtualized-select';
 
-import { fetchCourses, sendMessage } from './actions';
+import {fetchCourses, sendMessage} from './actions';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized/styles.css';
 import 'react-virtualized-select/styles.css';
@@ -31,17 +35,17 @@ class NewMessage extends React.Component {
   changeSelectedGroup = selectedOptions => {
     switch (selectedOptions.target.value) {
       case options.course:
-        this.setState({ selectedGroup: options.course });
+        this.setState({selectedGroup: options.course});
         break;
       case options.students:
-        this.setState({ selectedGroup: options.students });
+        this.setState({selectedGroup: options.students});
         break;
     }
   };
 
   addSelectedCourse = selectedCourses => {
     console.log(selectedCourses);
-    const { courses } = this.state;
+    const {courses} = this.state;
     let selectedStudents = [];
     selectedCourses.forEach(course => {
       const courseObj = courses.filter(c => c.id == course.value);
@@ -49,7 +53,7 @@ class NewMessage extends React.Component {
       courseStudents.map(st => {
         let obj = Object.assign(
           {},
-          { label: `${st.name} - ${st.email}`, value: st.id }
+          {label: `${st.name} - ${st.email}`, value: st.id}
         );
         selectedStudents.push(obj);
       });
@@ -62,19 +66,19 @@ class NewMessage extends React.Component {
   };
 
   addSelectedStudent = students => {
-    this.setState({ selectedStudents: students });
+    this.setState({selectedStudents: students});
   };
 
   changeSubject = event => {
-    this.setState({ subject: event.target.value });
+    this.setState({subject: event.target.value});
   };
 
   changeContent = event => {
-    this.setState({ content: event.target.value });
+    this.setState({content: event.target.value});
   };
 
   sendMessage = () => {
-    const { subject, content, selectedStudents } = this.state;
+    const {subject, content, selectedStudents} = this.state;
     const students = selectedStudents.map(st => st.value);
     let data = {
       subject,
@@ -90,17 +94,17 @@ class NewMessage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { courses } = nextProps;
+    const {courses} = nextProps;
     if (courses) {
       const coursesOptions = courses
         ? courses.map(course => {
-          return Object.assign({}, { label: course.name, value: course.id });
-        })
+            return Object.assign({}, {label: course.name, value: course.id});
+          })
         : [];
       let allStudentsList = courses.map(c => c.students);
       let students = _.flatten(allStudentsList);
       const studentsOptions = students.map(st =>
-        Object.assign({}, { label: `${st.name} - ${st.email}`, value: st.id })
+        Object.assign({}, {label: `${st.name} - ${st.email}`, value: st.id})
       );
       this.setState({
         courses: courses,
@@ -127,8 +131,8 @@ class NewMessage extends React.Component {
     return (
       <div className="main-div mb-20 mt-20">
         <div className="breadcrumb">
-          <a href="/messages">Начало /</a>
-          <a className="active"> Създаване на ново съобщение</a>          
+          <Link to={paths.messages}>Начало /</Link>
+          <a className="active"> Създаване на ново съобщение</a>
         </div>
         <h1>Създаване на ново съобщение</h1>
         <div className="select-group mb-20">
@@ -149,27 +153,40 @@ class NewMessage extends React.Component {
               onChange={this.addSelectedCourse}
             />
           ) : (
-              <VirtualizedSelect
-                className=""
-                options={studentsOptions}
-                placeholder={placeholder}
-                multi={true}
-                value={selectedStudents}
-                onChange={this.addSelectedStudent}
-              />
-            )}
+            <VirtualizedSelect
+              className=""
+              options={studentsOptions}
+              placeholder={placeholder}
+              multi={true}
+              value={selectedStudents}
+              onChange={this.addSelectedStudent}
+            />
+          )}
         </div>
-        <input className="input-field mb-20" placeholder="Добавете тема на съобщението" value={subject} onChange={this.changeSubject} />
-        <textarea className="input-field textarea-field" cols="30" rows="10" value={content} onChange={this.changeContent}></textarea>
+        <input
+          className="input-field mb-20"
+          placeholder="Добавете тема на съобщението"
+          value={subject}
+          onChange={this.changeSubject}
+        />
+        <textarea
+          className="input-field textarea-field"
+          cols="30"
+          rows="10"
+          value={content}
+          onChange={this.changeContent}
+        />
         {/* <input className="input-field textarea-field" value={content} onChange={this.changeContent} /> */}
-        <button className="btn btn-blue pull-right" onClick={this.sendMessage}>Изпрати</button>
+        <button className="btn btn-blue pull-right" onClick={this.sendMessage}>
+          Изпрати
+        </button>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { courses: state.newMessage.courses };
+  return {courses: state.newMessage.courses};
 };
 
 const mapDispatchToProps = {
