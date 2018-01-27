@@ -2,21 +2,24 @@ import React from 'react';
 import './styles.css';
 
 class Login extends React.Component {
-  state = {email: null, name: null};
+  state = {email: null, password: null};
 
   saveEmailInLocalStorage = () => {
     localStorage.setItem('email', this.state.email);
   };
 
   saveEmail = event => this.setState({email: event.target.value});
-  saveName = event => this.setState({name: event.target.value});
+  savePassword = event => this.setState({password: event.target.value});
 
+  
   render() {
+    console.log(this.state);
     return (
-      <div>
-        <input onChange={this.saveEmail} />
-        <input onChange={this.saveName} />
-        <button onClick={this.saveEmailInLocalStorage} />
+      <div className="login-page">
+        <h3>Вход в системата</h3>
+        <input placeholder="Въведете имейл" className="input-field" onChange={this.saveEmail} />
+        <input placeholder="Въведете парола" className="input-field" onChange={this.savePassword} />
+        <button type="submit" className="btn btn-blue" onClick={this.saveEmailInLocalStorage}>Влез</button>
       </div>
     );
   }
