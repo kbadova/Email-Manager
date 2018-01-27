@@ -22,6 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^messages/', MessagesList.as_view()),
     url(r'^courses/', CoursesListApi.as_view()),
-
     url(r'^login/', LoginApi.as_view())
 ]
