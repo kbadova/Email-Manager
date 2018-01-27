@@ -12,15 +12,32 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'name')
 
 
-class MessagesList(generics.ListAPIView):
-    class MessageSerializer(serializers.Serializer):
-        send_to = serializers.EmailField()
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ('id', 'subject', 'content', 'sent_at', 'completed', 'students')
 
+    students = serializers.SerializerMethodField()
+
+    def get_students(self, obj):
+        students = []
+        student_messages = obj.student_messages.all()
+        for student_course in student_messages:
+            students.append(student_course.student)
+
+        return StudentSerializer(students, many=True).data
+
+
+class MessagesList(generics.ListAPIView):
     serializer_class = MessageSerializer
 
     def get_queryset(self):
-
         return Message.objects.all()
+
+
+class MessageRetrieve(generics.RetrieveAPIView):
+    serializer_class = MessageSerializer
+    queryset = Message.objects.all()
 
 
 class LoginApi(APIView):
