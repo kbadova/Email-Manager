@@ -3,7 +3,13 @@ from rest_framework.views import APIView
 from rest_framework import generics, serializers
 from rest_framework.response import Response
 
-from .models import Message, Teacher
+from .models import Message, Teacher, Course, Student
+
+
+class StudentSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Student
+            fields = ('id', 'email', 'name')
 
 
 class MessagesList(generics.ListAPIView):
@@ -34,3 +40,20 @@ class LoginApi(APIView):
         request.user = user
 
         return Response(status=status.HTTP_200_OK)
+
+
+class CoursesListApi(generics.ListAPIView):
+    class CoursesListSerializer(serializers.Serializer):
+        name = serializers.CharField()
+        studenst = serializers.SerializerMethodField()
+
+        def get_students(self, obj):
+            students = []
+            student_courses = obj.student_courses.all()
+            for student_course in student_courses:
+                students.append(student_course.student)
+
+            return StudentSerializer(data=students, many=True)
+
+    queryset = Course.objects.all()
+    serializer_class = CoursesListSerializer
