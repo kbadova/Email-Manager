@@ -27,9 +27,13 @@ class TeacherInCourse(models.Model):
 
 
 class Message(models.Model):
-    send_to = models.ForeignKey(Student, on_delete=models.CASCADE)
-    send_from = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    send_from = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teachers_from')
     subject = models.CharField(max_length=255)
     content = models.TextField()
     sent_at = models.DateTimeField(blank=True, null=True)
-    completed = models.BooleanField(default=False)
+    completed = models.NullBooleanField(blank=True, null=True)
+
+
+class StudentInMessage(models.Model):
+    student = models.ForeignKey(Student, related_name='mstudents', on_delete=models.CASCADE)
+    message = models.ForeignKey(Message, related_name='student_messages', on_delete=models.CASCADE)

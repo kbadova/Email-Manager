@@ -32,4 +32,4 @@ class TeacherInCourseAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('send_to', 'send_from', 'subject', 'content', 'sent_at', 'completed')
+    list_display = ('send_from', 'subject', 'content', 'sent_at', 'completed')
