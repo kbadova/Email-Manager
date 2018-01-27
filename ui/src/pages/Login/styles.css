@@ -1,0 +1,14 @@
+.login-page {
+    width: 40%;
+    margin: auto;
+    padding: 30px;
+    text-align: center;
+}
+
+.input-field {
+    width: 100%; 
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #eee; 
+    padding: 10px; 
+}
