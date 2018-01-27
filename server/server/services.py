@@ -1,4 +1,5 @@
 import requests
+import json
 from rest_framework import serializers
 
 from .models import Student, Message, StudentInMessage
@@ -9,11 +10,18 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'name')
 
 
+class TeacherSerizelizer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ('id', 'email')
+
+
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('id', 'subject', 'content', 'sent_at', 'completed', 'students')
+        fields = ('id', 'subject', 'content', 'sent_at', 'completed', 'students', 'send_from')
 
+    send_from = TeacherSerizelizer()
     students = serializers.SerializerMethodField()
 
     def get_students(self, obj):
@@ -26,9 +34,15 @@ class MessageSerializer(serializers.ModelSerializer):
 
 def call_python_service(new_message):
     serializer = MessageSerializer(new_message)
-    headers = {'content-type': 'application/json'}
-    requests.post('http://localhost:5000/send-message/', data=serializer.data, headers=headers)
+    headers = {'Content-Type': 'Application/Json'}
 
+    response = requests.post('http://localhost:5000/send-message/', data=json.dumps(serializer.data), headers=headers)
+    if response.status_code == 202:
+        new_message.completed = True
+    else:
+        new_message.completed = False
+    new_message.save()
+    return new_message
 
 def create_message_service(subject, content, send_from, receivers):
     new_message = Message.objects.create(subject=subject,
@@ -37,6 +51,6 @@ def create_message_service(subject, content, send_from, receivers):
     for student in receivers:
         StudentInMessage.objects.create(student=student, message=new_message)
 
-    # call_python_service(new_message)
+    new_message = call_python_service(new_message)
 
     return new_message
