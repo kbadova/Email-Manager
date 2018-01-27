@@ -15,7 +15,6 @@ class Messages extends React.Component {
 
   render() {
     const {messages} = this.props;
-
     return (
       <div>
         <div className="mb-20">
@@ -36,7 +35,11 @@ class Messages extends React.Component {
                   <span className="msg-title">{message.subject}</span>
                   <span className="msg-content">
                     {message.content}
-                    <a className="pull-right btn btn-blue mt-10 mb-10">Виж</a>
+                    <Link
+                      to={`/view-message/#${message.id}`}
+                      className="pull-right btn btn-blue mt-10 mb-10">
+                      Виж
+                    </Link>
                   </span>
                 </div>
               );

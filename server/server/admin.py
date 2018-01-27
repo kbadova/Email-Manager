@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import (
-    Course, Teacher, Student, StudentInCourse, TeacherInCourse, Message
+    Course, Teacher, Student, StudentInCourse, TeacherInCourse, Message, StudentInMessage
 )
 
 
@@ -33,3 +33,8 @@ class TeacherInCourseAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('send_from', 'subject', 'content', 'sent_at', 'completed')
+
+
+@admin.register(StudentInMessage)
+class StudentInMessageAdmin(admin.ModelAdmin):
+    list_display = ('student', 'message')
