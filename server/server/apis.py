@@ -4,6 +4,7 @@ from rest_framework import generics, serializers
 from rest_framework.response import Response
 
 from .models import Message, Teacher, Course, Student
+from .services import create_message_service
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -38,6 +39,24 @@ class MessagesList(generics.ListAPIView):
 class MessageRetrieve(generics.RetrieveAPIView):
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
+
+
+class CreateMessageAPI(APIView):
+    class CreateMessageSerializer(serializers.Serializer):
+        subject = serializers.CharField()
+        content = serializers.CharField()
+        send_from = serializers.PrimaryKeyRelatedField(queryset=Teacher.objects.all())
+        receivers = serializers.ListField(child=serializers.PrimaryKeyRelatedField(queryset=Student.objects.all()))
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.CreateMessageSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
+
+        new_message = create_message_service(**validated_data)
+        response_serializer = MessageSerializer(new_message)
+
+        return Response(data=response_serializer.data, status=status.HTTP_201_CREATED)
 
 
 class LoginApi(APIView):

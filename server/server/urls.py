@@ -16,12 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from .apis import MessagesList, LoginApi, CoursesListApi, MessageRetrieve
+from .apis import MessagesList, LoginApi, CoursesListApi, MessageRetrieve, CreateMessageAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^messages/(?P<pk>[\w-]+)/$', MessageRetrieve.as_view()),
     url(r'^messages/$', MessagesList.as_view()),
+    url(r'^create-message/$', CreateMessageAPI.as_view(), name='create-message'),
     url(r'^courses/$', CoursesListApi.as_view()),
     url(r'^login/$', LoginApi.as_view())
 ]

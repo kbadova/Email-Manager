@@ -31,7 +31,7 @@ class Message(models.Model):
     subject = models.CharField(max_length=255)
     content = models.TextField()
     sent_at = models.DateTimeField(blank=True, null=True)
-    completed = models.BooleanField(default=False)
+    completed = models.NullBooleanField(blank=True, null=True)
 
 
 class StudentInMessage(models.Model):
