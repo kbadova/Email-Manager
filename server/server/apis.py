@@ -44,6 +44,7 @@ class LoginApi(APIView):
 
 class CoursesListApi(generics.ListAPIView):
     class CoursesListSerializer(serializers.Serializer):
+        id = serializers.IntegerField()
         name = serializers.CharField()
         students = serializers.SerializerMethodField()
 

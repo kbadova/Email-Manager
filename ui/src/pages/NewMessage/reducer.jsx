@@ -10,7 +10,6 @@ const newMessageReducer = (state = {initialCourses}, action) => {
         courses: action.data
       };
       break;
-
     default:
       return state;
   }

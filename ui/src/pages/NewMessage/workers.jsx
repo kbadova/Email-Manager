@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {call, put} from 'redux-saga/effects';
 
-import {successFetchCourses} from './actions';
+import {successFetchCourses, successSendMessage} from './actions';
 
 function* fetchCoursesWorker(action) {
   try {
@@ -13,4 +13,17 @@ function* fetchCoursesWorker(action) {
   }
 }
 
-export {fetchCoursesWorker};
+function* sendMessageWorker(action) {
+  try {
+    const response = yield call(
+      axios.post,
+      'http://localhost:8000/send-message',
+      action.data
+    );
+
+    yield put(successSendMessage(response.data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+export {fetchCoursesWorker, sendMessageWorker};

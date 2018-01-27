@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {connect} from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 
-import {fetchCourses} from './actions';
+import {fetchCourses, sendMessage} from './actions';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized/styles.css';
 import 'react-virtualized-select/styles.css';
@@ -21,7 +21,8 @@ class NewMessage extends React.Component {
     selectedStudents: [],
     coursesOptions: [],
     studentsOptions: [],
-    form: {}
+    subject: '',
+    content: ''
   };
 
   changeSelectedGroup = selectedOptions => {
@@ -35,12 +36,50 @@ class NewMessage extends React.Component {
     }
   };
 
-  addSelectedCourse = courses => {
-    this.setState({selectedCourses: courses});
+  addSelectedCourse = selectedCourses => {
+    console.log(selectedCourses);
+    const {courses} = this.state;
+    let selectedStudents = [];
+    selectedCourses.forEach(course => {
+      const courseObj = courses.filter(c => c.id == course.value);
+      const courseStudents = courseObj[0].students;
+      courseStudents.map(st => {
+        let obj = Object.assign(
+          {},
+          {label: `${st.name} - ${st.email}`, value: st.id}
+        );
+        selectedStudents.push(obj);
+      });
+    });
+
+    this.setState({
+      selectedCourses: selectedCourses,
+      selectedStudents: selectedStudents
+    });
   };
 
   addSelectedStudent = students => {
     this.setState({selectedStudents: students});
+  };
+
+  changeSubject = event => {
+    this.setState({subject: event.target.value});
+  };
+
+  changeContent = event => {
+    this.setState({content: event.target.value});
+  };
+
+  sendMessage = () => {
+    const {subject, content, selectedStudents} = this.state;
+    const students = selectedStudents.map(st => st.value);
+    let data = {
+      subject,
+      content,
+      students
+    };
+
+    this.props.sendMessage(data);
   };
 
   componentDidMount() {
@@ -52,7 +91,7 @@ class NewMessage extends React.Component {
     if (courses) {
       const coursesOptions = courses
         ? courses.map(course => {
-            return Object.assign({}, {label: course.name, value: course.name});
+            return Object.assign({}, {label: course.name, value: course.id});
           })
         : [];
       let allStudentsList = courses.map(c => c.students);
@@ -61,6 +100,7 @@ class NewMessage extends React.Component {
         Object.assign({}, {label: `${st.name} - ${st.email}`, value: st.id})
       );
       this.setState({
+        courses: courses,
         students: students,
         studentsOptions: studentsOptions,
         coursesOptions: coursesOptions
@@ -74,7 +114,9 @@ class NewMessage extends React.Component {
       selectedCourses,
       selectedStudents,
       studentsOptions,
-      coursesOptions
+      coursesOptions,
+      subject,
+      content
     } = this.state;
 
     const placeholder = selectedGroup == null ? '' : 'Избери студент';
@@ -106,6 +148,10 @@ class NewMessage extends React.Component {
             onChange={this.addSelectedStudent}
           />
         )}
+
+        <input value={subject} onChange={this.changeSubject} />
+        <input value={content} onChange={this.changeContent} />
+        <button onClick={this.sendMessage}>Create</button>
       </div>
     );
   }
@@ -116,7 +162,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  fetchCourses
+  fetchCourses,
+  sendMessage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewMessage);
