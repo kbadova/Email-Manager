@@ -7,9 +7,9 @@ from .models import Message, Teacher, Course, Student
 
 
 class StudentSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Student
-            fields = ('id', 'email', 'name')
+    class Meta:
+        model = Student
+        fields = ('id', 'email', 'name')
 
 
 class MessagesList(generics.ListAPIView):
@@ -45,7 +45,7 @@ class LoginApi(APIView):
 class CoursesListApi(generics.ListAPIView):
     class CoursesListSerializer(serializers.Serializer):
         name = serializers.CharField()
-        studenst = serializers.SerializerMethodField()
+        students = serializers.SerializerMethodField()
 
         def get_students(self, obj):
             students = []
@@ -53,7 +53,7 @@ class CoursesListApi(generics.ListAPIView):
             for student_course in student_courses:
                 students.append(student_course.student)
 
-            return StudentSerializer(data=students, many=True)
+            return StudentSerializer(students, many=True).data
 
     queryset = Course.objects.all()
     serializer_class = CoursesListSerializer
