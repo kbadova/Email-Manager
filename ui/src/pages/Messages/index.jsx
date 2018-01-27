@@ -17,7 +17,8 @@ class Messages extends React.Component {
     const {messages} = this.props;
     return (
       <div>
-        <div className="mb-20">
+          <div className="mb-20 mt-20">
+          <div className="breadcrumb"><a className="active">Начало /</a></div>
           <Link to={paths.newMessage} className="pull-right btn btn-green">
             Създай
           </Link>
