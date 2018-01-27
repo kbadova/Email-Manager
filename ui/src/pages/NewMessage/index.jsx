@@ -1,6 +1,9 @@
 import React from 'react';
+import _ from 'lodash';
+import {connect} from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 
+import {fetchCourses} from './actions';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized/styles.css';
 import 'react-virtualized-select/styles.css';
@@ -14,6 +17,10 @@ class NewMessage extends React.Component {
   state = {
     selectedGroup: null,
     selectedCourses: [],
+    students: [],
+    selectedStudents: [],
+    coursesOptions: [],
+    studentsOptions: [],
     form: {}
   };
 
@@ -28,21 +35,46 @@ class NewMessage extends React.Component {
     }
   };
 
-  addSelectedCourse = course => {
-    console.log(course);
-    // this.setState({selectedCourses: })
+  addSelectedCourse = courses => {
+    this.setState({selectedCourses: courses});
   };
 
   addSelectedStudent = students => {
-    console.log(students);
+    this.setState({selectedStudents: students});
   };
+
+  componentDidMount() {
+    this.props.fetchCourses();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {courses} = nextProps;
+    if (courses) {
+      const coursesOptions = courses
+        ? courses.map(course => {
+            return Object.assign({}, {label: course.name, value: course.name});
+          })
+        : [];
+      let allStudentsList = courses.map(c => c.students);
+      let students = _.flatten(allStudentsList);
+      const studentsOptions = students.map(st =>
+        Object.assign({}, {label: `${st.name} - ${st.email}`, value: st.id})
+      );
+      this.setState({
+        students: students,
+        studentsOptions: studentsOptions,
+        coursesOptions: coursesOptions
+      });
+    }
+  }
+
   render() {
     const {
       selectedGroup,
-      courses,
       selectedCourses,
-      students,
-      selectedStudents
+      selectedStudents,
+      studentsOptions,
+      coursesOptions
     } = this.state;
 
     const placeholder = selectedGroup == null ? '' : 'Избери студент';
@@ -58,7 +90,7 @@ class NewMessage extends React.Component {
         {selectedGroup == options.course ? (
           <VirtualizedSelect
             className=""
-            options={courses}
+            options={coursesOptions}
             placeholder={'Избери курс'}
             multi={true}
             value={selectedCourses}
@@ -67,8 +99,9 @@ class NewMessage extends React.Component {
         ) : (
           <VirtualizedSelect
             className=""
-            options={students}
+            options={studentsOptions}
             placeholder={placeholder}
+            multi={true}
             value={selectedStudents}
             onChange={this.addSelectedStudent}
           />
@@ -78,4 +111,12 @@ class NewMessage extends React.Component {
   }
 }
 
-export default NewMessage;
+const mapStateToProps = state => {
+  return {courses: state.newMessage.courses};
+};
+
+const mapDispatchToProps = {
+  fetchCourses
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewMessage);
