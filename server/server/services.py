@@ -1,6 +1,7 @@
 import requests
 import json
 from rest_framework import serializers
+from datetime import datetime
 
 from .models import Student, Message, StudentInMessage
 
@@ -37,9 +38,12 @@ def call_python_service(new_message):
     serializer = MessageSerializer(new_message)
     headers = {'Content-Type': 'Application/Json'}
 
-    response = requests.post('http://localhost:5000/send-message/', data=json.dumps(serializer.data), headers=headers)
+    response = requests.post('http://localhost:5000/send-message/',
+                             data=json.dumps(serializer.data),
+                             headers=headers)
     if response.status_code == 202:
         new_message.completed = True
+        new_message.sent_at = datetime.now()
     else:
         new_message.completed = False
     new_message.save()
