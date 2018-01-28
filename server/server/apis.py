@@ -33,7 +33,7 @@ class MessagesList(generics.ListAPIView):
     serializer_class = MessageSerializer
 
     def get_queryset(self):
-        return Message.objects.all()
+        return Message.objects.filter(completed=True).all()
 
 
 class MessageRetrieve(generics.RetrieveAPIView):
