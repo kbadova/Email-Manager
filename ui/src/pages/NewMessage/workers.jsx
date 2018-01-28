@@ -1,7 +1,7 @@
 import axios from 'axios';
-import {call, put} from 'redux-saga/effects';
-
-import {successFetchCourses, successSendMessage} from './actions';
+import { call, put } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
+import { successFetchCourses, successSendMessage } from './actions';
 
 function* fetchCoursesWorker(action) {
   try {
@@ -27,9 +27,9 @@ function* sendMessageWorker(action) {
       alert('Your message was sent successfully');
     }
 
-    yield put(successSendMessage(response.data));
+    yield* [put(successSendMessage(response.data)), put(push('/messages'))];
   } catch (error) {
     console.log(error);
   }
 }
-export {fetchCoursesWorker, sendMessageWorker};
+export { fetchCoursesWorker, sendMessageWorker };
