@@ -14,16 +14,16 @@ class TestCreateContractAPI(TestCase):
         super().setUp()
 
     def test_create_new_message(self):
-        teacher = Teacher.objects.create(email="mechence@gmail.com", name="Ivo", password="1234")
-        student = Student.objects.create(email="kuche@gmail.com", name="Kuche")
-        student2 = Student.objects.create(email="kuche2@gmail.com", name="Kuche2")
+        teacher = Teacher.objects.create(email="monkovaslavyana@gmail.com", name="Ivo", password="1234")
+        student = Student.objects.create(email="badovakrasi@gmail.com", name="Krasimira Badova")
+        student2 = Student.objects.create(email="ruzha.bobotanova@gmail.com", name="Ruzha")
 
         post_data = {
-            'subject': 'Exam',
+            'subject': 'PISSSSSSSSSSSSSSSSSSSSS',
             'content': 'lorem',
             'send_from': teacher.id,
             'receivers': [student.id, student2.id]
         }
 
-        response = self.api_client.post(self.url, post_data, format='json')        
+        response = self.api_client.post(self.url, post_data, format='json')
         self.response_201(response)
