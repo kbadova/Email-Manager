@@ -16,7 +16,7 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.8",
     "file-loader": "^1.1.6",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^5.5.0",
     "jQuery": "^1.7.4",
     "node-sass": "^4.7.2",
     "react": "^16.2.0",
